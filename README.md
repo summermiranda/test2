@@ -1,5 +1,6 @@
 import threading
 import numpy as np
+import time
 
 # Preload common responses
 hello_text = 'Hello! How can I assist you?'
@@ -72,7 +73,7 @@ def interact_with_user_rl(state):
             # Update Q-table based on Q-learning update rule
             update_Q_table(state, action, reward, next_state)
 
-            # Update total rewards
+            #Update total rewards
             total_rewards += reward
 
             # Update state for next step
@@ -88,16 +89,17 @@ def interact_with_user_rl(state):
 
     return total_rewards
 
+# Lock to ensure thread safety
+lock = threading.Lock()
+
 # Add a flag to track whether the assistant is currently speaking
 assistant_speaking = False
 
 # Function to simulate generating and playing audio
 def generate_and_play(text):
     global assistant_speaking
-    assistant_speaking = True  # Set the flag when the assistant starts speaking
+    with lock:
+        assistant_speaking = True  # Set the flag when the assistant starts speaking
     print("Assistant:", text)  # Simulate speech by printing the text
-    assistant_speaking = False  # Clear the flag when the assistant finishes speaking
-
-# Function to simulate playing music
-def play_music():
-    print("Playing music...")
+    time.sleep(2)  # Simulate time taken to "speak"
+    with lock:
