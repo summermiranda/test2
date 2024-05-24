@@ -69,24 +69,13 @@ def interact_with_user_rl(state):
             reward = np.random.random()  # Placeholder for actual reward
             next_state = np.random.choice(num_states)  # Placeholder for actual next state
             done = step == max_steps_per_episode - 1  # Placeholder for actual done condition
-
-            # Update Q-table based on Q-learning update rule
             update_Q_table(state, action, reward, next_state)
-
-            #Update total rewards
             total_rewards += reward
-
-            # Update state for next step
             state = next_state
-
-            # Check if episode is done
             if done:
                 break
-
-        # Update exploration rate
         exploration_rate = min_exploration_rate + \
                            (max_exploration_rate - min_exploration_rate) * np.exp(-exploration_decay_rate * episode)
-
     return total_rewards
 
 # Lock to ensure thread safety
